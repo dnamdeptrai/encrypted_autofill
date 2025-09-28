@@ -70,7 +70,7 @@ unlockBtn.addEventListener('click', async () => {
         const dec = await decryptWithKey(key, res.masterCheck.iv, res.masterCheck.ct);
         if(dec === 'master-check-v1'){
           masterInMemory = master;
-          statusEl.textContent = 'Unlocked (in-memory)';
+          statusEl.textContent = 'đã mở rồi đó';
           renderCreds();
         } else {
           statusEl.textContent = 'Master key sai';
