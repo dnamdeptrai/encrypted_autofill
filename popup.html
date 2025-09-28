@@ -1,0 +1,39 @@
+
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Encrypted Autofill</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h3>Tự động nhập(Demo)</h3>
+
+  <div id="setup">
+    <label>Master key</label><br>
+    <input id="masterInput" type="password" placeholder="Nhập master key"><br>
+    <button id="unlockBtn">Set / Unlock</button>
+    <div id="status" aria-live="polite"></div>
+  </div>
+
+  <hr>
+
+  <div id="addSection">
+    <h4>Thêm tài khoản</h4>
+    <input id="siteInput" placeholder="site (ví dụ: example.com)"><br>
+    <input id="userInput" placeholder="username / email"><br>
+    <input id="passInput" placeholder="mật khẩu"><br>
+    <button id="saveCredBtn">Lưu </button>
+  </div>
+
+  <hr>
+
+  <div id="credsList">
+    <h4>Tài khoản</h4>
+    <div id="list"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
