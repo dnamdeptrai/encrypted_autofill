@@ -50,10 +50,8 @@ const unlockBtn = document.getElementById('unlockBtn');
 unlockBtn.addEventListener('click', async () => {
   const master = masterInput.value;
   if(!master){ statusEl.textContent = 'Cần nhập master key'; return; }
-  // check if masterSalt exists
   chrome.storage.local.get(['masterSalt','masterCheck'], async (res) => {
     if(!res.masterSalt){
-      // first time setup
       const salt = crypto.getRandomValues(new Uint8Array(16));
       const saltHex = bufToHex(salt.buffer);
       const key = await deriveKey(master, saltHex);
@@ -64,7 +62,6 @@ unlockBtn.addEventListener('click', async () => {
         renderCreds();
       });
     } else {
-      // verify
       try {
         const key = await deriveKey(master, res.masterSalt);
         const dec = await decryptWithKey(key, res.masterCheck.iv, res.masterCheck.ct);
@@ -82,7 +79,6 @@ unlockBtn.addEventListener('click', async () => {
   });
 });
 
-// Add credential
 document.getElementById('saveCredBtn').addEventListener('click', async () => {
   if(!masterInMemory){ alert('Unlock với master trước'); return; }
   const site = document.getElementById('siteInput').value.trim();
@@ -106,7 +102,6 @@ document.getElementById('saveCredBtn').addEventListener('click', async () => {
   });
 });
 
-// Render saved creds
 async function renderCreds(){
   const listEl = document.getElementById('list');
   listEl.innerHTML = 'đợi tý...';
@@ -132,7 +127,7 @@ async function renderCreds(){
           try {
             const pass = await decryptWithKey(key, c.iv, c.ct);
             chrome.tabs.query({active:true,currentWindow:true}, (tabs) => {
-              if(!tabs || !tabs[0]) { alert('Có cái tab nào cần được lấp đầu đâu??'); return; }
+              if(!tabs || !tabs[0]) { alert('Có cái tab nào cần được lấp đầy đâu??'); return; }
               chrome.tabs.sendMessage(tabs[0].id, {action:'fillCredential', username: c.user, password: pass, site: c.site}, (resp) => {
               });
             });
@@ -141,7 +136,6 @@ async function renderCreds(){
           }
         });
       });
-      // Delete button
       const delBtn = document.createElement('button');
       delBtn.textContent = 'Delete';
       delBtn.className = 'smallbtn';
@@ -160,7 +154,6 @@ async function renderCreds(){
   });
 }
 
-// On popup load
 document.addEventListener('DOMContentLoaded', () => {
   statusEl.textContent = 'Đang Khoá';
   renderCreds();
